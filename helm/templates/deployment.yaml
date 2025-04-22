@@ -9,7 +9,7 @@ metadata:
     tier: web
     project: expense
 spec:
-  replicas: 2
+  replicas: 3
   selector:
   # As we have many pods ,we should give what labels the deployment to match
     matchLabels:
