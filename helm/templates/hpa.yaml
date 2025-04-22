@@ -1,0 +1,19 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend
+  namespace: expense
+spec:
+  scaleTargetRef:        #Defines the workload that this HPA will monitor and scale
+    apiVersion: apps/v1
+    kind: Deployment         # The HPA will scale a Deployment (named frontend).
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization        # The scaling decision is based on CPU utilization percentage
+        averageUtilization: {{ .Values.hpa.utilization }}    #if it crossed 5% it starts creating replicas

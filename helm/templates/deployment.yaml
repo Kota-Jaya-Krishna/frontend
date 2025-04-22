@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: expense
+  # labels of deployemnt resource
+  labels:
+    app: frontends
+    tier: web
+    project: expense
+spec:
+  replicas: 1
+  selector:
+  # As we have many pods ,we should give what labels the deployment to match
+    matchLabels:
+      app: frontend
+      tier: web
+      project: expense
+  # pod template
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: web
+        project: expense
+    spec:
+      containers:
+      - name: expense
+        image: "{{ .Values.deployment.imageURL }}:{{ .Values.deployment.imageversion }}"
+        resources:       #resouces limit
+        # soft limit (68 MiB (Megabytes) of memory and 100 milliCPU (0.1 vCPU)).These define the minimum guaranteed resources the container will get.
+          requests:
+            memory: "68Mi"
+            cpu: "100m"
+          # hard limit  cannot use more than 128 MiB of memory and 150 milliCPU (0.15 vCPU).These define the maximum resources the container can use.
+          limits:
+            memory: "128Mi"
+            cpu: "150m"
+
+        volumeMounts:
+              - name: nginx
+                mountPath: /etc/nginx/nginx.conf
+                subPath: nginx.conf
+                readOnly: true
+      volumes:
+      - name: nginx
+        configMap:
+          name: nginx
+          items:
+            - key: nginx.conf
+              path: nginx.conf
