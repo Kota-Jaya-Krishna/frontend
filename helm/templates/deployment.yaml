@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: expense
-        image: "{{ .Values.deployment.imageURL }}:{{ .Values.deployment.imageversion }}"
+        image: "{{ .Values.deployment.imageURL }}:{{ .Values.deployment.imageVersion }}"
         resources:       #resouces limit
         # soft limit (68 MiB (Megabytes) of memory and 100 milliCPU (0.1 vCPU)).These define the minimum guaranteed resources the container will get.
           requests:
